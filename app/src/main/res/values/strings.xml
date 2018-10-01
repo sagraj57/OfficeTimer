@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">OfficeTimer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="out_time_text">Out Time</string>
+    <string name="in_time_text">In Time</string>
+    <string name="time_spent_text">Time Spent</string>
+    <string name="press_stop_text">Press Stop</string>
+    <string name="stop_time_text">Stop Time</string>
+    <string name="stop_button_text">Stop</string>
+    <string name="start_button_text">Start</string>
+    <string name="start_time_text">Start Time</string>
+    <string name="press_start_text">Press Start</string>
+</resources>
