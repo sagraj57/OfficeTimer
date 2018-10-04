@@ -1,6 +1,8 @@
 package com.sagar.android.officetimer;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.AnalogClock;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.sql.Array;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     TextView mTextMessage;
-    RecyclerView.Adapter adapter;
     AnalogClock mAnalogClock;
     private TextView startTimeTextView;
     private TextView stopTimeTextView;
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     public Date mStartTime;
     public Date mStopTime;
     long mTimeSpent;
-    RecyclerView tRecyclerView;
     ArrayList<Times> todayTimeList;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -47,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
                     //mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-                    return true;
+                    Intent dashboardIntent = new Intent(MainActivity.this, DashboardActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("timeData", todayTimeList);
+                    dashboardIntent.putExtras(b);
+                    startActivity(dashboardIntent);
                 case R.id.navigation_notifications:
                    // mTextMessage.setText(R.string.title_notifications);
                     return true;
@@ -81,11 +86,7 @@ public class MainActivity extends AppCompatActivity {
         todayTimeList.add(time1);
         todayTimeList.add(time2);
          */
-        // recyclerview and adapter
-        tRecyclerView = findViewById(R.id.today_recyclerView);
-        tRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TodayAdapter(todayTimeList);
-        tRecyclerView.setAdapter(adapter);
+
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
         //Log.d(TAG, "Start Time: " + newTime.getStartTime());
         //Log.d(TAG, "Stop Time: " + newTime.getStopTime());
         todayTimeList.add(newTime);
-        adapter.notifyDataSetChanged();
     }
 
 }
