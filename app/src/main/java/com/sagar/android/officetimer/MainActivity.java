@@ -14,12 +14,8 @@ import android.view.View;
 import android.widget.AnalogClock;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.sql.Array;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mStopButton;
     public Date mStartTime;
     public Date mStopTime;
-    long mTimeSpent;
-    ArrayList<Times> todayTimeList;
+    TimesDatabase db;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -49,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_dashboard:
                     Intent dashboardIntent = new Intent(MainActivity.this, DashboardActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable("timeData", todayTimeList);
-                    dashboardIntent.putExtras(b);
                     startActivity(dashboardIntent);
                 case R.id.navigation_notifications:
                    // mTextMessage.setText(R.string.title_notifications);
@@ -72,21 +64,6 @@ public class MainActivity extends AppCompatActivity {
         stopTimeTextView = findViewById(R.id.timeCounter2_textView);
         mStartButton =  findViewById(R.id.start_button);
         mStopButton = findViewById(R.id.stop_button);
-        todayTimeList = new ArrayList<>();
-
-        /**Date demoDate = Calendar.getInstance().getTime();
-
-        Times time1 = new  Times();
-        Times time2 = new Times();
-        time1.setStartTime(demoDate);
-        time1.setStopTime(demoDate);
-        time2.setStartTime(demoDate);
-        time2.setStopTime(demoDate);
-
-        todayTimeList.add(time1);
-        todayTimeList.add(time2);
-         */
-
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +104,14 @@ public class MainActivity extends AppCompatActivity {
         newTime.setStopTime(mStopTime);
         //Log.d(TAG, "Start Time: " + newTime.getStartTime());
         //Log.d(TAG, "Stop Time: " + newTime.getStopTime());
-        todayTimeList.add(newTime);
+        //todayTimeList.add(newTime);
+        db = TimesDatabase.getTimesDatabase(this);
+        DatabaseInitializer.populateAsync(db, newTime);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TimesDatabase.destroyInstance();
+    }
 }

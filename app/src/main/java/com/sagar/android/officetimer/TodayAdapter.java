@@ -15,9 +15,9 @@ import java.util.List;
 
 public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> {
 
-    ArrayList<Times> times;
+    List<Times> times;
 
-    public TodayAdapter(ArrayList<Times> times) {
+    public TodayAdapter(List<Times> times) {
         this.times = times;
     }
 
@@ -30,11 +30,21 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(TodayAdapter.ViewHolder holder, int position) {
         DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date mStartTime = times.get(position).getStartTime();
+        Date mStopTime = times.get(position).getStopTime();
+
+        long timeSpentMillis = mStopTime.getTime() - mStartTime.getTime();
+        String mSeconds = String.valueOf(timeSpentMillis/1000);
+        String mMinutes = String.valueOf(timeSpentMillis/(1000*60));
+        String mHours = String.valueOf(timeSpentMillis/(1000*60*60));
+
+        String timeSpent = mHours + ":" + mMinutes +":"+mSeconds;
 
         holder.row_startTime.setText(timeFormat.format(times.get(position).getStartTime()));
         holder.row_stopTime.setText(timeFormat.format(times.get(position).getStopTime()));
-        holder.row_timeSpent.setText(dateFormat.format(times.get(position).getStartTime()));
+        holder.row_timeSpent.setText(timeSpent);
     }
 
     @Override

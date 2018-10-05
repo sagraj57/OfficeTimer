@@ -10,25 +10,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    RecyclerView tRecyclerView;
+    RecyclerView.Adapter adapter;
+    List<Times> timesList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        RecyclerView tRecyclerView;
-        RecyclerView.Adapter adapter;
-        ArrayList<Times> todayTimeList;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // Get Array List from Intent Data
-        Bundle getB = getIntent().getExtras();
-        todayTimeList = (ArrayList<Times>) getB.getSerializable("timeData");
+        // Get List Data from Database
+        TimesDatabase db = TimesDatabase.getTimesDatabase(this);
+        timesList = db.timesDao().getAllUsers();
+
         // recyclerview and adapter
-        tRecyclerView = findViewById(R.id.today_recyclerView);
+        tRecyclerView = findViewById(R.id.recyclerView);
         tRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TodayAdapter(todayTimeList);
+        adapter = new TodayAdapter(timesList);
         tRecyclerView.setAdapter(adapter);
 
         BottomNavigationView navigation = findViewById(R.id.navigation2);
