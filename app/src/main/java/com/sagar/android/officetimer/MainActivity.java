@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         stopTimeTextView = findViewById(R.id.timeCounter2_textView);
         mStartButton =  findViewById(R.id.start_button);
         mStopButton = findViewById(R.id.stop_button);
+        db = TimesDatabase.getTimesDatabase(this);
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,16 +97,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopClock() {
         mStopTime = Calendar.getInstance().getTime();
-        DateFormat date = new SimpleDateFormat("hh:mm:ss a");
-        String stopTimeString = date.format(mStopTime);
+        DateFormat time = new SimpleDateFormat("hh:mm:ss a");
+        String stopTimeString = time.format(mStopTime);
         stopTimeTextView.setText(stopTimeString);
         Times newTime = new Times();
         newTime.setStartTime(mStartTime);
         newTime.setStopTime(mStopTime);
-        //Log.d(TAG, "Start Time: " + newTime.getStartTime());
-        //Log.d(TAG, "Stop Time: " + newTime.getStopTime());
-        //todayTimeList.add(newTime);
-        db = TimesDatabase.getTimesDatabase(this);
+
+        // set Date
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+        String dateColumn = date.format(mStopTime);
+        newTime.setDateColumn(dateColumn);
         DatabaseInitializer.populateAsync(db, newTime);
     }
 

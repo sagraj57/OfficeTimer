@@ -15,8 +15,8 @@ public class DatabaseInitializer {
         private final Times mTimes;
 
         PopulateDbAsync(TimesDatabase db, Times times) {
-            mDb = db;
-            mTimes = times;
+            this.mDb = db;
+            this.mTimes = times;
         }
 
         @Override

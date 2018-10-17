@@ -10,11 +10,11 @@ import java.util.List;
 @Dao
 public interface TimesDao {
     @Query("SELECT * FROM TIMETABLE")
-    List<Times> getAllUsers();
+    List<Times> getAllTimes();
 
     @Insert
     void insertAll(Times... times);
 
-    @Query("SELECT * FROM timeTable WHERE date LIKE :givenDate")
-    List<Times> getTimesByDate(Date givenDate);
+    @Query("SELECT * FROM timeTable WHERE date = :givenDate")
+    List<Times> getTimesByDate(String givenDate);
 }

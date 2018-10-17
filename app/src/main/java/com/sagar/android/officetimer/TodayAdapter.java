@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,12 +36,16 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         Date mStartTime = times.get(position).getStartTime();
         Date mStopTime = times.get(position).getStopTime();
 
-        long timeSpentMillis = mStopTime.getTime() - mStartTime.getTime();
-        String mSeconds = String.valueOf(timeSpentMillis/1000);
-        String mMinutes = String.valueOf(timeSpentMillis/(1000*60));
-        String mHours = String.valueOf(timeSpentMillis/(1000*60*60));
-
-        String timeSpent = mHours + ":" + mMinutes +":"+mSeconds;
+        //create a time spent string
+        Long timeDifMillis = mStopTime.getTime() - mStartTime.getTime();
+        Long hours = timeDifMillis/(1000*60*60);
+        Long minutes = (timeDifMillis/1000 - (hours*60*60))/60;
+        Long seconds = timeDifMillis/1000 - (hours*60*60 + minutes*60);
+        DecimalFormat decimalFormat = new DecimalFormat("00");
+        String hour = decimalFormat.format(hours);
+        String minute = decimalFormat.format(minutes);
+        String second = decimalFormat.format(seconds);
+        String timeSpent = hour+":"+minute+":"+second;
 
         holder.row_startTime.setText(timeFormat.format(times.get(position).getStartTime()));
         holder.row_stopTime.setText(timeFormat.format(times.get(position).getStopTime()));

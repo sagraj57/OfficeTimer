@@ -7,7 +7,6 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 @Database(entities = Times.class, version = 1)
-@TypeConverters({Converters.class})
 public abstract class TimesDatabase extends RoomDatabase {
     private static TimesDatabase INSTANCE;
     public abstract TimesDao timesDao();
